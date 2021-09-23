@@ -30,10 +30,10 @@ CsvParser *CsvParser_new(const char *filePath, const char *delimiter, int firstL
 CsvParser *CsvParser_new_from_string(const char *csvString, const char *delimiter, int firstLineIsHeader);
 void CsvParser_destroy(CsvParser *csvParser);
 void CsvParser_destroy_row(CsvRow *csvRow);
-CsvRow *CsvParser_getHeader(CsvParser *csvParser);
+const CsvRow *CsvParser_getHeader(CsvParser *csvParser);
 CsvRow *CsvParser_getRow(CsvParser *csvParser);
-int CsvParser_getNumFields(CsvRow *csvRow);
-char **CsvParser_getFields(CsvRow *csvRow);
+int CsvParser_getNumFields(const CsvRow *csvRow);
+const char **CsvParser_getFields(const CsvRow *csvRow);
 const char* CsvParser_getErrorMessage(CsvParser *csvParser);
 
 // Private

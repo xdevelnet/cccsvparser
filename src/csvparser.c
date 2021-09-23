@@ -78,7 +78,7 @@ void CsvParser_destroy_row(CsvRow *csvRow) {
     free(csvRow);
 }
 
-CsvRow *CsvParser_getHeader(CsvParser *csvParser) {
+const CsvRow *CsvParser_getHeader(CsvParser *csvParser) {
     if (! csvParser->firstLineIsHeader_) {
         _CsvParser_setErrorMessage(csvParser, "Cannot supply header, as current CsvParser object does not support header");
         return NULL;
@@ -96,12 +96,12 @@ CsvRow *CsvParser_getRow(CsvParser *csvParser) {
     return _CsvParser_getRow(csvParser);
 }
 
-int CsvParser_getNumFields(CsvRow *csvRow) {
+int CsvParser_getNumFields(const CsvRow *csvRow) {
     return csvRow->numOfFields_;
 }
 
-char **CsvParser_getFields(CsvRow *csvRow) {
-    return csvRow->fields_;
+char **CsvParser_getFields(const CsvRow *csvRow) {
+    return (const char **)csvRow->fields_;
 }
 
 CsvRow *_CsvParser_getRow(CsvParser *csvParser) {
@@ -157,6 +157,8 @@ CsvRow *_CsvParser_getRow(CsvParser *csvParser) {
         if (endOfFileIndicator) {
             if (currFieldCharIter == 0 && fieldIter == 0) {
                 _CsvParser_setErrorMessage(csvParser, "Reached EOF");
+                free(currField);
+                CsvParser_destroy_row(csvRow);
                 return NULL;
             }
             currChar = '\n';
